@@ -5,6 +5,7 @@ import Link from "./Link";
 import { SelectedPage } from "@/shared/types";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import ActionButton from "@/shared/ActionButton";
+import { motion } from "framer-motion";
 
 type Props = {
   isTopOfPage: boolean;
@@ -24,7 +25,12 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }: Props) => {
         className={`${navBackground} ${flexBetween} fixed top-0 z-30 w-full py-6`}
       >
         <div className={`${flexBetween} mx-auto w-5/6`}>
-          <div className={`${flexBetween} w-full gap-16`}>
+          <motion.div
+            className={`${flexBetween} w-full gap-16`}
+            initial={{ y: "-50px", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 120, duration: 0.5 }}
+          >
             {/* LEFT SIDE */}
             <img src={Logo} alt="logo" />
 
@@ -71,13 +77,21 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }: Props) => {
                 <Bars3Icon className="h-6 w-6 text-white" />
               </button>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
 
       {/* MOBILE MENU MODAL */}
       {!isAboveMediumScreens && isMenuToggled && (
-        <div className="fixed bottom-0 right-0 z-40 h-full w-[300px] bg-primary-100 drop-shadow-xl">
+        <motion.div
+          className="fixed bottom-0 right-0 z-40 h-full w-[300px] bg-primary-100 drop-shadow-xl"
+          initial={{ x: "300px" }}
+          animate={isMenuToggled && { x: "10px" }}
+          transition={{
+            type: "spring",
+            stiffness: 70,
+          }}
+        >
           {/* CLOSE ICON */}
           <div className="flex justify-end p-12">
             <button onClick={() => setIsMenuToggled(!isMenuToggled)}>
@@ -86,7 +100,7 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }: Props) => {
           </div>
 
           {/* MENU ITEMS */}
-          <div className={`ml-[33%] flex flex-col gap-10 text-2xl`}>
+          <motion.div className={`ml-[33%] flex flex-col gap-10 text-2xl`}>
             <Link
               page="Home"
               selectedPage={selectedPage}
@@ -107,8 +121,8 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }: Props) => {
               selectedPage={selectedPage}
               setSelectedPage={setSelectedPage}
             />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
     </nav>
   );
